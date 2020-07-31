@@ -2,7 +2,6 @@ package org.spring.test.v1;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.spring.beans.factory.BeanFactory;
 import org.spring.beans.factory.support.DefaultBeanFactory;
 import org.spring.beans.factory.xml.XmlBeanDefinitionReader;
 import org.spring.core.io.ClassPathResource;

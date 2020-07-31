@@ -8,12 +8,7 @@ import org.spring.beans.BeanDefinition;
  * @date 2020/7/20
  */
 public interface BeanDefinitionRegistry {
-    /**
-     * 获取Bean定义
-     * @param beanId
-     * @return
-     */
-    BeanDefinition getBeanDefinition(String beanId);
+
 
     /**
      * 注册Bean

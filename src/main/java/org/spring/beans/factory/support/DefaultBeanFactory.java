@@ -43,11 +43,6 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
         return null;
     }
 
-    @Override
-    public BeanDefinition getBeanDefinition(String beanId) {
-        // TODO 判空
-        return BEAN_MAP.get(beanId);
-    }
 
     @Override
     public void registerBeanDefinition(String beanId, BeanDefinition beanDefinition) {
