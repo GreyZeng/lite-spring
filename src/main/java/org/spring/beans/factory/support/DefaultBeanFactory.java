@@ -4,6 +4,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.spring.beans.BeanDefinition;
 import org.spring.beans.factory.BeanFactory;
 
 import java.io.File;
@@ -21,7 +22,7 @@ public class DefaultBeanFactory implements BeanFactory {
      * Key beanId
      * Value bean class 的全路径，例如：org.spring.service.v1.UserService
      */
-    private static final Map<String, String> BEAN_MAP = new HashMap<>();
+    private static final Map<String, BeanDefinition> BEAN_MAP = new HashMap<>();
 
     public DefaultBeanFactory(String configPath) {
         // TODO 配置文件检查
@@ -40,7 +41,9 @@ public class DefaultBeanFactory implements BeanFactory {
         Element root = document.getRootElement();
         List<Element> elements = root.elements();
         for (Element element : elements) {
-            BEAN_MAP.put(element.attribute("id").getValue(), element.attribute("class").getValue());
+            String id = element.attributeValue("id");
+            String beanClassName = element.attributeValue("class");
+            BEAN_MAP.put(id, new GenericBeanDefinition(id, beanClassName));
         }
     }
 
@@ -49,10 +52,10 @@ public class DefaultBeanFactory implements BeanFactory {
         // TODO bean存在与否判断
         // TODO 异常处理
         // TODO 构造函数带参数
-        String beanClassName = BEAN_MAP.get(beanId);
+        BeanDefinition definition = BEAN_MAP.get(beanId);
         Class target = null;
         try {
-            target = Thread.currentThread().getContextClassLoader().loadClass(beanClassName);
+            target = Thread.currentThread().getContextClassLoader().loadClass(definition.getBeanClassName());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
