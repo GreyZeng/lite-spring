@@ -6,9 +6,9 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.spring.beans.BeanDefinition;
 import org.spring.beans.factory.BeanFactory;
+import org.spring.core.io.Resource;
 
-import java.io.File;
-import java.net.URL;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,17 +24,16 @@ public class DefaultBeanFactory implements BeanFactory {
      */
     private static final Map<String, BeanDefinition> BEAN_MAP = new HashMap<>();
 
-    public DefaultBeanFactory(String configPath) {
+    public DefaultBeanFactory(Resource resource) {
         // TODO 配置文件检查
         // TODO 异常处理和封装
-        URL url = Thread.currentThread().getContextClassLoader().getResource(configPath);
-        File file = new File(url.getPath());
+
         SAXReader reader = new SAXReader();
 
         Document document;
         try {
-            document = reader.read(file);
-        } catch (DocumentException e) {
+            document = reader.read(resource.getInputStream());
+        } catch (DocumentException | IOException e) {
             e.printStackTrace();
             return;
         }

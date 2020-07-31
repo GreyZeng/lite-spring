@@ -16,7 +16,6 @@ import static org.junit.Assert.assertNotNull;
 public class ResourceTest {
     @Test
     public void testClassPathResource() throws Exception {
-
         Resource r = new ClassPathResource("bean-v1.xml");
         try (InputStream is = r.getInputStream()) {
             assertNotNull(is);
