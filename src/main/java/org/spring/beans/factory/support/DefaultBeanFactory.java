@@ -1,49 +1,24 @@
 package org.spring.beans.factory.support;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.spring.beans.BeanDefinition;
 import org.spring.beans.factory.BeanFactory;
-import org.spring.core.io.Resource;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author Grey
  * 2020/7/31
  */
-public class DefaultBeanFactory implements BeanFactory {
+public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
     /**
      * Key beanId
      * Value bean class 的全路径，例如：org.spring.service.v1.UserService
      */
     private static final Map<String, BeanDefinition> BEAN_MAP = new HashMap<>();
 
-    public DefaultBeanFactory(Resource resource) {
-        // TODO 配置文件检查
-        // TODO 异常处理和封装
+    public DefaultBeanFactory() {
 
-        SAXReader reader = new SAXReader();
-
-        Document document;
-        try {
-            document = reader.read(resource.getInputStream());
-        } catch (DocumentException | IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        Element root = document.getRootElement();
-        List<Element> elements = root.elements();
-        for (Element element : elements) {
-            String id = element.attributeValue("id");
-            String beanClassName = element.attributeValue("class");
-            BEAN_MAP.put(id, new GenericBeanDefinition(id, beanClassName));
-        }
     }
 
     @Override
@@ -66,5 +41,16 @@ public class DefaultBeanFactory implements BeanFactory {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public BeanDefinition getBeanDefinition(String beanId) {
+        // TODO 判空
+        return BEAN_MAP.get(beanId);
+    }
+
+    @Override
+    public void registerBeanDefinition(String beanId, BeanDefinition beanDefinition) {
+        BEAN_MAP.put(beanId, beanDefinition);
     }
 }
