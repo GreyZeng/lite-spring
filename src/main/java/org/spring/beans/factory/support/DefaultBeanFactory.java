@@ -10,8 +10,9 @@ import java.util.Map;
  * @author Grey
  * 2020/7/31
  */
-public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
     /**
+     * TODO     考虑线程安全的容器
      * Key beanId
      * Value bean class 的全路径，例如：org.spring.service.v1.UserService
      */
@@ -34,6 +35,7 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
             e.printStackTrace();
         }
         try {
+
             return target.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();

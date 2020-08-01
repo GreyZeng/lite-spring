@@ -5,4 +5,5 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="userService" class="org.spring.service.v1.UserService"></bean>
+    <bean id="orgService" class="org.spring.service.v1.OrgService" scope="prototype"></bean>
 </beans>
