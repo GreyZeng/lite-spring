@@ -31,6 +31,10 @@ public class XmlBeanDefinitionReader {
             BeanDefinition bd;
             for (Element element : elements) {
                 bd = new GenericBeanDefinition(element.attribute("id").getValue(), element.attribute("class").getValue());
+                if (element.attribute("scope") != null) {
+                    // TODO 校验scope格式
+                    bd.setScope(element.attribute("scope").getValue());
+                }
                 registry.registerBeanDefinition(element.attribute("id").getValue(), bd);
             }
         } catch (Exception e) {

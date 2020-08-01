@@ -28,6 +28,18 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
         // TODO 异常处理
         // TODO 构造函数带参数
         BeanDefinition definition = BEAN_MAP.get(beanId);
+        if (definition.isSingleton()) {
+            Object bean = this.getSingleton(beanId);
+            if(bean == null){
+                bean = createBean(definition);
+                this.registerSingleton(beanId, bean);
+            }
+            return bean;
+        }
+        return createBean(definition);
+    }
+
+    private Object createBean(BeanDefinition definition) {
         Class target = null;
         try {
             target = Thread.currentThread().getContextClassLoader().loadClass(definition.getBeanClassName());
