@@ -8,6 +8,6 @@ import org.junit.runners.Suite;
  * 2020/7/31
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ResourceTest.class, BeanFactoryV1Test.class})
+@Suite.SuiteClasses({ApplicationContextTestV1.class, ResourceTest.class, BeanFactoryV1Test.class})
 public class V1AllTest {
 }
