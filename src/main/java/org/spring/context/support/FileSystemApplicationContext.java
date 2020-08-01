@@ -10,7 +10,7 @@ import org.spring.core.io.FileSystemResource;
  * 2020/8/1
  */
 public class FileSystemApplicationContext implements ApplicationContext {
-    private DefaultBeanFactory factory;
+    private final DefaultBeanFactory factory;
 
     public FileSystemApplicationContext(String configPath) {
         factory = new DefaultBeanFactory();

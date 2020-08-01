@@ -10,7 +10,7 @@ import org.spring.core.io.ClassPathResource;
  * 2020/8/1
  */
 public class ClassPathXmlApplicationContext implements ApplicationContext {
-    private DefaultBeanFactory factory;
+    private final DefaultBeanFactory factory;
 
     public ClassPathXmlApplicationContext(String configPath) {
         factory = new DefaultBeanFactory();
