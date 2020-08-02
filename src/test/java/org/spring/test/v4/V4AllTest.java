@@ -11,7 +11,9 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         PackageResourceLoaderTest.class,
         ClassReaderTest.class,
-        MetadataReaderTest.class
+        MetadataReaderTest.class,
+        DependencyDescriptorTest.class,
+        InjectionMetadataTest.class
 })
 public class V4AllTest {
 }

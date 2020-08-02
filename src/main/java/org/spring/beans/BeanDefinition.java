@@ -12,6 +12,7 @@ public interface BeanDefinition {
     String SCOPE_PROTOTYPE = "prototype";
 
     String getID();
+
     boolean isSingleton();
 
     boolean isPrototype();
@@ -27,4 +28,11 @@ public interface BeanDefinition {
     ConstructorArgument getConstructorArgument();
 
     boolean hasConstructorArgumentValues();
+
+    boolean hasBeanClass();
+
+    Class<?> getBeanClass() throws IllegalStateException;
+
+    // TODO 注意ClassLoader
+    Class<?> resolveBeanClass() throws ClassNotFoundException;
 }

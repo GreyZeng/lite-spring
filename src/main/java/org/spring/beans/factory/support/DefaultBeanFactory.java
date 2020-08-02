@@ -4,6 +4,8 @@ import org.spring.beans.BeanDefinition;
 import org.spring.beans.PropertyValue;
 import org.spring.beans.SimpleTypeConverter;
 import org.spring.beans.factory.BeanFactory;
+import org.spring.beans.factory.config.AutowireCapableBeanFactory;
+import org.spring.beans.factory.config.DependencyDescriptor;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -16,7 +18,7 @@ import java.util.Map;
  * @author Grey
  * 2020/7/31
  */
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry, AutowireCapableBeanFactory {
     /**
      * TODO     考虑线程安全的容器
      * Key beanId
@@ -109,5 +111,32 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
     @Override
     public void registerBeanDefinition(String beanId, BeanDefinition beanDefinition) {
         BEAN_MAP.put(beanId, beanDefinition);
+    }
+
+    @Override
+    public Object resolveDependency(DependencyDescriptor descriptor) {
+
+        Class<?> typeToMatch = descriptor.getDependencyType();
+        for (BeanDefinition bd : this.BEAN_MAP.values()) {
+            //确保BeanDefinition 有Class对象
+            resolveBeanClass(bd);
+            Class<?> beanClass = bd.getBeanClass();
+            if (typeToMatch.isAssignableFrom(beanClass)) {
+                return this.getBean(bd.getID());
+            }
+        }
+        return null;
+    }
+
+    public void resolveBeanClass(BeanDefinition bd) {
+        if (bd.hasBeanClass()) {
+            return;
+        } else {
+            try {
+                bd.resolveBeanClass();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("can't load class:" + bd.getBeanClassName());
+            }
+        }
     }
 }
