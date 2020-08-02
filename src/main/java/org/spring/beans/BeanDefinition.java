@@ -7,11 +7,11 @@ import java.util.List;
  * 2020/7/31
  */
 public interface BeanDefinition {
-    // TODO 可以用枚举优化
     String SCOPE_DEFAULT = "";
     String SCOPE_SINGLETON = "singleton";
     String SCOPE_PROTOTYPE = "prototype";
 
+    String getID();
     boolean isSingleton();
 
     boolean isPrototype();
@@ -24,4 +24,7 @@ public interface BeanDefinition {
 
     List<PropertyValue> getPropertyValues();
 
+    ConstructorArgument getConstructorArgument();
+
+    boolean hasConstructorArgumentValues();
 }

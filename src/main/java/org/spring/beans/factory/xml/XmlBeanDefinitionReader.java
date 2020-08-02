@@ -4,6 +4,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.spring.beans.BeanDefinition;
+import org.spring.beans.ConstructorArgument;
 import org.spring.beans.PropertyValue;
 import org.spring.beans.factory.config.RuntimeBeanReference;
 import org.spring.beans.factory.config.TypedStringValue;
@@ -53,6 +54,8 @@ public class XmlBeanDefinitionReader {
                     // TODO 校验scope格式
                     bd.setScope(element.attribute("scope").getValue());
                 }
+                // 解析构造函数
+                parseConstructorArgElements(element, bd);
                 // 注入属性值到Bean中
                 parsePropertyElement(element, bd);
                 registry.registerBeanDefinition(element.attribute("id").getValue(), bd);
@@ -61,6 +64,29 @@ public class XmlBeanDefinitionReader {
             // TODO 封装异常
             throw new RuntimeException("parse bean definition file error", e);
         }
+    }
+
+    private void parseConstructorArgElements(Element beanEle, BeanDefinition bd) {
+        Iterator iter = beanEle.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
+        while (iter.hasNext()) {
+            Element ele = (Element) iter.next();
+            parseConstructorArgElement(ele, bd);
+        }
+    }
+
+    private void parseConstructorArgElement(Element ele, BeanDefinition bd) {
+        String typeAttr = ele.attributeValue(TYPE_ATTRIBUTE);
+        String nameAttr = ele.attributeValue(NAME_ATTRIBUTE);
+        Object value = parsePropertyValue(ele, null);
+        ConstructorArgument.ValueHolder valueHolder = new ConstructorArgument.ValueHolder(value);
+        if (StringUtils.hasLength(typeAttr)) {
+            valueHolder.setType(typeAttr);
+        }
+        if (StringUtils.hasLength(nameAttr)) {
+            valueHolder.setName(nameAttr);
+        }
+
+        bd.getConstructorArgument().addArgumentValue(valueHolder);
     }
 
     private void parsePropertyElement(Element beanElem, BeanDefinition bd) {
@@ -76,7 +102,7 @@ public class XmlBeanDefinitionReader {
             }
 
 
-            Object val = parsePropertyValue(propElem, bd, propertyName);
+            Object val = parsePropertyValue(propElem, propertyName);
 
             //
             PropertyValue pv = new PropertyValue(propertyName, val);
@@ -85,7 +111,7 @@ public class XmlBeanDefinitionReader {
         }
     }
 
-    private Object parsePropertyValue(Element ele, BeanDefinition bd, String propertyName) {
+    private Object parsePropertyValue(Element ele, String propertyName) {
         String elementName = (propertyName != null) ?
                 "<property> element for property '" + propertyName + "'" :
                 "<constructor-arg> element";

@@ -53,22 +53,27 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
     }
 
     private Object instantiateBean(BeanDefinition definition) {
-        Class target = null;
-        try {
-            target = Thread.currentThread().getContextClassLoader().loadClass(definition.getBeanClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
+        if (definition.hasConstructorArgumentValues()) {
+            ConstructorResolver resolver = new ConstructorResolver(this);
+            return resolver.autowireConstructor(definition);
+        } else {
+            Class target = null;
+            try {
+                target = Thread.currentThread().getContextClassLoader().loadClass(definition.getBeanClassName());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
 
-            return target.newInstance();
+                return target.newInstance();
 
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
     }
 
 
