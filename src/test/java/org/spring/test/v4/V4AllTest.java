@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         PackageResourceLoaderTest.class,
-        ClassReaderTest.class
+        ClassReaderTest.class,
+        MetadataReaderTest.class
 })
 public class V4AllTest {
 }
