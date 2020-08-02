@@ -1,6 +1,10 @@
 package org.spring.beans.factory.support;
 
 import org.spring.beans.BeanDefinition;
+import org.spring.beans.PropertyValue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Grey
@@ -11,6 +15,7 @@ public class GenericBeanDefinition implements BeanDefinition {
     private String beanClassName;
     // 默认是单例
     private String scope = SCOPE_DEFAULT;
+    private List<PropertyValue> propertyValues = new ArrayList<>();
 
     public GenericBeanDefinition(String beanId, String beanClassName) {
         this.beanId = beanId;
@@ -40,5 +45,10 @@ public class GenericBeanDefinition implements BeanDefinition {
     @Override
     public String getBeanClassName() {
         return beanClassName;
+    }
+
+    @Override
+    public List<PropertyValue> getPropertyValues() {
+        return this.propertyValues;
     }
 }

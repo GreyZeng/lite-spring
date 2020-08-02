@@ -1,5 +1,7 @@
 package org.spring.beans;
 
+import java.util.List;
+
 /**
  * @author Grey
  * 2020/7/31
@@ -19,4 +21,7 @@ public interface BeanDefinition {
     void setScope(String scope);
 
     String getBeanClassName();
+
+    List<PropertyValue> getPropertyValues();
+
 }
