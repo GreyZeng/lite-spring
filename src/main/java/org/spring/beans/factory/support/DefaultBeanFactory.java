@@ -4,12 +4,15 @@ import org.spring.beans.BeanDefinition;
 import org.spring.beans.PropertyValue;
 import org.spring.beans.SimpleTypeConverter;
 import org.spring.beans.factory.BeanFactory;
-import org.spring.beans.factory.config.AutowireCapableBeanFactory;
+import org.spring.beans.factory.config.BeanPostProcessor;
+import org.spring.beans.factory.config.ConfigurableBeanFactory;
 import org.spring.beans.factory.config.DependencyDescriptor;
+import org.spring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +21,14 @@ import java.util.Map;
  * @author Grey
  * 2020/7/31
  */
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry, AutowireCapableBeanFactory {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry, ConfigurableBeanFactory {
     /**
      * TODO     考虑线程安全的容器
      * Key beanId
      * Value bean class 的全路径，例如：org.spring.service.v1.UserService
      */
     private static final Map<String, BeanDefinition> BEAN_MAP = new HashMap<>();
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     public DefaultBeanFactory() {
 
@@ -80,6 +84,11 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
 
 
     private void populateBean(BeanDefinition bd, Object bean) {
+        for (BeanPostProcessor processor : this.getBeanPostProcessors()) {
+            if (processor instanceof InstantiationAwareBeanPostProcessor) {
+                ((InstantiationAwareBeanPostProcessor) processor).postProcessPropertyValues(bean, bd.getID());
+            }
+        }
         List<PropertyValue> pvs = bd.getPropertyValues();
         if (pvs == null || pvs.isEmpty()) {
             return;
@@ -138,5 +147,15 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
                 throw new RuntimeException("can't load class:" + bd.getBeanClassName());
             }
         }
+    }
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor postProcessor) {
+        this.beanPostProcessors.add(postProcessor);
+    }
+
+    @Override
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return this.beanPostProcessors;
     }
 }

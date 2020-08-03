@@ -13,7 +13,9 @@ import org.junit.runners.Suite;
         ClassReaderTest.class,
         MetadataReaderTest.class,
         DependencyDescriptorTest.class,
-        InjectionMetadataTest.class
+        InjectionMetadataTest.class,
+        AutowiredAnnotationProcessorTest.class,
+        ApplicationContextTestV4.class
 })
 public class V4AllTest {
 }

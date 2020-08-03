@@ -9,7 +9,7 @@ import org.spring.beans.factory.xml.XmlBeanDefinitionReader;
 import org.spring.core.io.ClassPathResource;
 import org.spring.dao.v4.AccountDao;
 import org.spring.dao.v4.ItemDao;
-import org.spring.service.v1.UserService;
+import org.spring.service.v4.UserService;
 
 import java.lang.reflect.Field;
 
