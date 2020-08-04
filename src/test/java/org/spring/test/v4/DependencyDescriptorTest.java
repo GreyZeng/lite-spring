@@ -19,12 +19,11 @@ import java.lang.reflect.Field;
  */
 public class DependencyDescriptorTest {
     private DefaultBeanFactory factory;
-    private XmlBeanDefinitionReader reader;
 
     @Before
     public void setup() {
         factory = new DefaultBeanFactory();
-        reader = new XmlBeanDefinitionReader(factory);
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);
         reader.loadBeanDefinitions(new ClassPathResource("bean-v4.xml"));
     }
 
@@ -32,14 +31,14 @@ public class DependencyDescriptorTest {
     public void testResolveDependency() throws Exception {
 
 
-        Field f = UserService.class.getDeclaredField("accountDao");
-        DependencyDescriptor descriptor = new DependencyDescriptor(f, true);
-        Object o = factory.resolveDependency(descriptor);
-        Assert.assertTrue(o instanceof AccountDao);
-        f = UserService.class.getDeclaredField("itemDao");
-        descriptor = new DependencyDescriptor(f, true);
-        o = factory.resolveDependency(descriptor);
-        Assert.assertTrue(o instanceof ItemDao);
+        Field field = UserService.class.getDeclaredField("accountDao");
+        DependencyDescriptor descriptor = new DependencyDescriptor(field, true);
+        Object resolveDependency = factory.resolveDependency(descriptor);
+        Assert.assertTrue(resolveDependency instanceof AccountDao);
+        field = UserService.class.getDeclaredField("itemDao");
+        descriptor = new DependencyDescriptor(field, true);
+        resolveDependency = factory.resolveDependency(descriptor);
+        Assert.assertTrue(resolveDependency instanceof ItemDao);
 
     }
 }

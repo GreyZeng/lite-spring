@@ -7,11 +7,9 @@ import java.util.List;
  * 2020/8/2
  */
 public class InjectionMetadata {
-    private final Class<?> targetClass;
     private List<InjectionElement> injectionElements;
 
-    public InjectionMetadata(Class<?> targetClass, List<InjectionElement> injectionElements) {
-        this.targetClass = targetClass;
+    public InjectionMetadata(List<InjectionElement> injectionElements) {
         this.injectionElements = injectionElements;
     }
 

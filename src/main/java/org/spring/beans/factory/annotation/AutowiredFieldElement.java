@@ -24,7 +24,7 @@ public class AutowiredFieldElement extends InjectionElement {
 
     @Override
     public void inject(Object target) {
-        Field field = this.getField();
+        Field field = getField();
         try {
             DependencyDescriptor desc = new DependencyDescriptor(field, this.required);
             Object value = factory.resolveDependency(desc);

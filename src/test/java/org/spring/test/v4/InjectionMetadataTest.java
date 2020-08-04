@@ -8,7 +8,6 @@ import org.spring.beans.factory.annotation.InjectionMetadata;
 import org.spring.beans.factory.support.DefaultBeanFactory;
 import org.spring.beans.factory.xml.XmlBeanDefinitionReader;
 import org.spring.core.io.ClassPathResource;
-import org.spring.core.io.Resource;
 import org.spring.service.v4.UserService;
 
 import java.lang.reflect.Field;
@@ -22,35 +21,29 @@ import static org.junit.Assert.assertNotNull;
  */
 public class InjectionMetadataTest {
     private DefaultBeanFactory factory;
-    private XmlBeanDefinitionReader reader;
 
     @Before
     public void setup() {
         factory = new DefaultBeanFactory();
-        reader = new XmlBeanDefinitionReader(factory);
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);
+        reader.loadBeanDefinitions(new ClassPathResource("bean-v4.xml"));
     }
 
     @Test
     public void testInjection() throws Exception {
-
-        Resource resource = new ClassPathResource("bean-v4.xml");
-        reader.loadBeanDefinitions(resource);
-
-        Class<?> clz = UserService.class;
         LinkedList<InjectionElement> elements = new LinkedList<>();
-
         {
-            Field f = UserService.class.getDeclaredField("accountDao");
-            InjectionElement injectionElem = new AutowiredFieldElement(f, true, factory);
+            Field field = UserService.class.getDeclaredField("accountDao");
+            InjectionElement injectionElem = new AutowiredFieldElement(field, true, factory);
             elements.add(injectionElem);
         }
         {
-            Field f = UserService.class.getDeclaredField("itemDao");
-            InjectionElement injectionElem = new AutowiredFieldElement(f, true, factory);
+            Field field = UserService.class.getDeclaredField("itemDao");
+            InjectionElement injectionElem = new AutowiredFieldElement(field, true, factory);
             elements.add(injectionElem);
         }
 
-        InjectionMetadata metadata = new InjectionMetadata(clz, elements);
+        InjectionMetadata metadata = new InjectionMetadata(elements);
 
         UserService userService = new UserService();
 

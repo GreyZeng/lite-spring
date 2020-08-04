@@ -16,7 +16,6 @@ import static org.objectweb.asm.ClassReader.SKIP_DEBUG;
  * 2020/8/2
  */
 public class SimpleMetadataReader implements MetadataReader {
-    private final Resource resource;
 
     private final ClassMetadata classMetadata;
 
@@ -24,13 +23,11 @@ public class SimpleMetadataReader implements MetadataReader {
 
 
     public SimpleMetadataReader(Resource resource) throws IOException {
-        InputStream is = new BufferedInputStream(resource.getInputStream());
+
         ClassReader classReader;
 
-        try {
+        try (InputStream is = new BufferedInputStream(resource.getInputStream())) {
             classReader = new ClassReader(is);
-        } finally {
-            is.close();
         }
 
         AnnotationMetadataReadingVisitor visitor = new AnnotationMetadataReadingVisitor();
@@ -38,10 +35,7 @@ public class SimpleMetadataReader implements MetadataReader {
 
         this.annotationMetadata = visitor;
         this.classMetadata = visitor;
-        this.resource = resource;
     }
-
-
 
 
     @Override

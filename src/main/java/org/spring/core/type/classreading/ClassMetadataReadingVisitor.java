@@ -29,6 +29,7 @@ public class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMe
     public ClassMetadataReadingVisitor() {
         // TODO
         super(327680);
+
     }
 
 

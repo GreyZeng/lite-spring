@@ -56,7 +56,7 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
         }
         while (targetClass != null && targetClass != Object.class);
 
-        return new InjectionMetadata(clazz, elements);
+        return new InjectionMetadata(elements);
     }
 
     protected boolean determineRequiredStatus(Annotation ann) {

@@ -28,7 +28,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
      * Value bean class 的全路径，例如：org.spring.service.v1.UserService
      */
     private static final Map<String, BeanDefinition> BEAN_MAP = new HashMap<>();
-    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     public DefaultBeanFactory() {
 
@@ -126,7 +126,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
     public Object resolveDependency(DependencyDescriptor descriptor) {
 
         Class<?> typeToMatch = descriptor.getDependencyType();
-        for (BeanDefinition bd : this.BEAN_MAP.values()) {
+        for (BeanDefinition bd : BEAN_MAP.values()) {
             //确保BeanDefinition 有Class对象
             resolveBeanClass(bd);
             Class<?> beanClass = bd.getBeanClass();
