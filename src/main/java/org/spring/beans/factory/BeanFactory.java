@@ -12,4 +12,5 @@ public interface BeanFactory {
      * @return
      */
     Object getBean(String beanId);
+    Class<?> getType(String name) /*throws NoSuchBeanDefinitionException*/;
 }

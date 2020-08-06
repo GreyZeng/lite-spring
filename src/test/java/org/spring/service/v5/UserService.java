@@ -2,8 +2,8 @@ package org.spring.service.v5;
 
 
 import org.spring.beans.factory.annotation.Autowired;
-import org.spring.dao.v4.AccountDao;
-import org.spring.dao.v4.ItemDao;
+import org.spring.dao.v5.AccountDao;
+import org.spring.dao.v5.ItemDao;
 import org.spring.stereotype.Component;
 
 /**

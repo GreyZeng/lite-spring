@@ -32,7 +32,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         beanFactory.addBeanPostProcessor(postProcessor);
 
     }
-
+    public Class<?> getType(String name)  {
+        return this.factory.getType(name);
+    }
     /**
      * 根据配置信息生成Resource
      *

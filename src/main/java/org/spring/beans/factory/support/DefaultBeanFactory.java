@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Grey
  * 2020/7/31
  */
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry, ConfigurableBeanFactory {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements  BeanDefinitionRegistry, ConfigurableBeanFactory {
     /**
      * TODO     考虑线程安全的容器
      * Key beanId
@@ -49,6 +49,17 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
             return bean;
         }
         return createBean(definition);
+    }
+
+    @Override
+    public Class<?> getType(String name) {
+        BeanDefinition bd = BEAN_MAP.get(name);
+        if(bd == null){
+            // throw new NoSuchBeanDefinitionException(name);
+            throw new RuntimeException(name);
+        }
+        resolveBeanClass(bd);
+        return bd.getBeanClass();
     }
 
     private Object createBean(BeanDefinition beanDefinition) {
