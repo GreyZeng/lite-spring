@@ -2,6 +2,9 @@ package org.spring.test.v5;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.spring.aop.MethodMatcher;
+import org.spring.aop.aspectj.AspectJExpressionPointcut;
+import org.spring.service.v5.UserService;
 
 import java.lang.reflect.Method;
 
@@ -10,32 +13,27 @@ import java.lang.reflect.Method;
  * 2020/8/5
  */
 public class PointcutTest {
-    /*@Test
-    public void testPointcut() throws Exception{
-
-        String expression = "execution(* org.litespring.service.v5.*.placeOrder(..))";
-
+    @Test
+    public void testPointcut() throws NoSuchMethodException {
+        String expression = "execution(* org.spring.service.v5.*.getAccountDao(..))";
         AspectJExpressionPointcut pc = new AspectJExpressionPointcut();
         pc.setExpression(expression);
-
         MethodMatcher mm = pc.getMethodMatcher();
-
         {
-            Class<?> targetClass = PetStoreService.class;
+            Class<?> targetClass = UserService.class;
 
             Method method1 = targetClass.getMethod("placeOrder");
-            Assert.assertTrue(mm.matches(method1));
+            Assert.assertFalse(mm.matches(method1));
 
             Method method2 = targetClass.getMethod("getAccountDao");
-            Assert.assertFalse(mm.matches(method2));
+            Assert.assertTrue(mm.matches(method2));
         }
 
         {
-            Class<?> targetClass = org.litespring.service.v4.PetStoreService.class;
+            Class<?> targetClass = org.spring.service.v4.UserService.class;
 
             Method method = targetClass.getMethod("getAccountDao");
             Assert.assertFalse(mm.matches(method));
         }
-
-    }*/
+    }
 }
