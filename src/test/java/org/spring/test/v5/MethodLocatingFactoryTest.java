@@ -30,8 +30,8 @@ public class MethodLocatingFactoryTest {
 
         Method m = methodLocatingFactory.getObject();
 
-        Assert.assertTrue(TransactionManager.class.equals(m.getDeclaringClass()));
-        Assert.assertTrue(m.equals(TransactionManager.class.getMethod("start")));
+        Assert.assertEquals(TransactionManager.class, m.getDeclaringClass());
+        Assert.assertEquals(m, TransactionManager.class.getMethod("start"));
 
     }
 }
