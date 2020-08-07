@@ -6,6 +6,7 @@ import org.spring.test.v1.V1AllTest;
 import org.spring.test.v2.V2AllTest;
 import org.spring.test.v3.V3AllTest;
 import org.spring.test.v4.V4AllTest;
+import org.spring.test.v5.V5AllTest;
 
 /**
  * @author zenghui
@@ -16,6 +17,7 @@ import org.spring.test.v4.V4AllTest;
         V1AllTest.class,
         V2AllTest.class,
         V3AllTest.class,
+        V5AllTest.class,
         V4AllTest.class
 })
 public class AllTest {
