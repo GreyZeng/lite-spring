@@ -9,11 +9,19 @@ import java.util.List;
  * 2020/8/2
  */
 public class ConstructorArgument {
-    private final List<ValueHolder> argumentValues = new LinkedList<>();
+    private final List<ValueHolder> argumentValues = new LinkedList<ValueHolder>();
 
+
+    /**
+     * Create a new empty ConstructorArgumentValues object.
+     */
     public ConstructorArgument() {
     }
 
+
+    public void addArgumentValue(Object value) {
+        this.argumentValues.add(new ValueHolder(value));
+    }
 
     public void addArgumentValue(ValueHolder valueHolder) {
         this.argumentValues.add(valueHolder);
@@ -39,7 +47,15 @@ public class ConstructorArgument {
         this.argumentValues.clear();
     }
 
-    public static class ValueHolder {
+
+
+
+
+    /**
+     * Holder for a constructor argument value, with an optional type
+     * attribute indicating the target type of the actual constructor argument.
+     */
+    public static class ValueHolder{
 
         private Object value;
 

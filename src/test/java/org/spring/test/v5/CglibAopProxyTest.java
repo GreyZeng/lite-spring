@@ -7,8 +7,10 @@ import org.spring.aop.aspectj.AspectJAfterReturningAdvice;
 import org.spring.aop.aspectj.AspectJBeforeAdvice;
 import org.spring.aop.aspectj.AspectJExpressionPointcut;
 import org.spring.aop.config.AopConfig;
+import org.spring.aop.config.AspectInstanceFactory;
 import org.spring.aop.framework.AopConfigSupport;
 import org.spring.aop.framework.CglibProxyFactory;
+import org.spring.beans.factory.BeanFactory;
 import org.spring.service.v5.UserService;
 import org.spring.tx.TransactionManager;
 import org.spring.util.MessageTracker;
@@ -19,28 +21,36 @@ import java.util.List;
  * @author zenghui
  * 2020/8/8
  */
-public class CglibAopProxyTest {
-    private static AspectJBeforeAdvice beforeAdvice = null;
-    private static AspectJAfterReturningAdvice afterAdvice = null;
+public class CglibAopProxyTest extends AbstractV5Test{
+
+    private  AspectJBeforeAdvice beforeAdvice = null;
+    private  AspectJAfterReturningAdvice afterAdvice = null;
+    private  AspectJExpressionPointcut pc = null;
+    private BeanFactory beanFactory = null;
+    private AspectInstanceFactory aspectInstanceFactory = null;
 
     @Before
-    public  void setup() throws Exception{
+    public  void setUp() throws Exception{
+
         MessageTracker.clearMsgs();
 
-        TransactionManager tx = new TransactionManager();
         String expression = "execution(* org.spring.service.v5.*.placeOrder(..))";
-        AspectJExpressionPointcut pc = new AspectJExpressionPointcut();
+        pc = new AspectJExpressionPointcut();
         pc.setExpression(expression);
 
+        beanFactory = this.getBeanFactory("bean-v5.xml");
+        aspectInstanceFactory = this.getAspectInstanceFactory("tx");
+        aspectInstanceFactory.setBeanFactory(beanFactory);
+
         beforeAdvice = new AspectJBeforeAdvice(
-                TransactionManager.class.getMethod("start"),
+                getAdviceMethod("start"),
                 pc,
-                tx);
+                aspectInstanceFactory);
 
         afterAdvice = new AspectJAfterReturningAdvice(
-                TransactionManager.class.getMethod("commit"),
+                getAdviceMethod("commit"),
                 pc,
-                tx);
+                aspectInstanceFactory);
 
     }
 
@@ -69,4 +79,6 @@ public class CglibAopProxyTest {
 
         proxy.toString();
     }
+
+
 }

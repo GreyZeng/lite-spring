@@ -12,12 +12,14 @@ import java.sql.Ref;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+        ApplicationContextTest5.class,
+        BeanDefinitionTestV5.class,
         CGlibTest.class,
         PointcutTest.class,
         MethodLocatingFactoryTest.class,
         ReflectiveMethodInvocationTest.class,
-        CglibAopProxyTest.class
-
+        CglibAopProxyTest.class,
+        BeanFactoryTestV5.class
 })
 public class V5AllTest {
 }

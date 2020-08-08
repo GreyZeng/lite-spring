@@ -10,10 +10,7 @@ import org.spring.beans.BeanDefinition;
 public interface BeanDefinitionRegistry {
 
 
-    /**
-     * 注册Bean
-     * @param beanId
-     * @param beanDefinition
-     */
-    void registerBeanDefinition(String beanId, BeanDefinition beanDefinition);
+    BeanDefinition getBeanDefinition(String beanID);
+
+    void registerBeanDefinition(String beanID, BeanDefinition bd);
 }

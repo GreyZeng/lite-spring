@@ -3,6 +3,7 @@ package org.spring.beans.factory.xml;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.spring.aop.config.ConfigBeanDefinitionParser;
 import org.spring.beans.BeanDefinition;
 import org.spring.beans.ConstructorArgument;
 import org.spring.beans.PropertyValue;
@@ -57,6 +58,8 @@ public class XmlBeanDefinitionReader {
                 } else if (this.isContextNamespace(namespaceUri)) {
                     //例如<context:component-scan>
                     parseComponentElement(element);
+                } else if(this.isAOPNamespace(namespaceUri)){
+                    parseAOPElement(element);  //例如 <aop:config>
                 }
                 /*bd = new GenericBeanDefinition(element.attribute("id").getValue(), element.attribute("class").getValue());
                 if (element.attribute("scope") != null) {
@@ -82,7 +85,13 @@ public class XmlBeanDefinitionReader {
     public boolean isContextNamespace(String namespaceUri) {
         return (!StringUtils.hasLength(namespaceUri) || CONTEXT_NAMESPACE_URI.equals(namespaceUri));
     }
-
+    public boolean isAOPNamespace(String namespaceUri){
+        return (!StringUtils.hasLength(namespaceUri) || AOP_NAMESPACE_URI.equals(namespaceUri));
+    }
+    private void parseAOPElement(Element ele){
+        ConfigBeanDefinitionParser parser = new ConfigBeanDefinitionParser();
+        parser.parse(ele, this.registry);
+    }
     private void parseComponentElement(Element element) {
         String basePackages = element.attributeValue(BASE_PACKAGE_ATTRIBUTE);
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(registry);

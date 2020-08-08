@@ -2,6 +2,8 @@ package org.spring.aop.config;
 
 import org.spring.beans.BeanUtils;
 import org.spring.beans.factory.BeanFactory;
+import org.spring.beans.factory.BeanFactoryAware;
+import org.spring.beans.factory.FactoryBean;
 import org.spring.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -10,7 +12,7 @@ import java.lang.reflect.Method;
  * @author zenghui
  * 2020/8/6
  */
-public class MethodLocatingFactory {
+public class MethodLocatingFactory implements FactoryBean<Method>, BeanFactoryAware {
     private String targetBeanName;
 
     private String methodName;
@@ -51,5 +53,10 @@ public class MethodLocatingFactory {
 
     public Method getObject() throws Exception {
         return this.method;
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+        return Method.class;
     }
 }

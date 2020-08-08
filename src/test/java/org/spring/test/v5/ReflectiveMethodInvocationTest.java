@@ -7,7 +7,10 @@ import org.junit.Test;
 import org.spring.aop.aspectj.AspectJAfterReturningAdvice;
 import org.spring.aop.aspectj.AspectJAfterThrowingAdvice;
 import org.spring.aop.aspectj.AspectJBeforeAdvice;
+import org.spring.aop.aspectj.AspectJExpressionPointcut;
+import org.spring.aop.config.AspectInstanceFactory;
 import org.spring.aop.framework.ReflectiveMethodInvocation;
+import org.spring.beans.factory.BeanFactory;
 import org.spring.service.v5.UserService;
 import org.spring.tx.TransactionManager;
 import org.spring.util.MessageTracker;
@@ -22,33 +25,44 @@ import java.util.List;
  * 2020/8/8
  */
 
-public class ReflectiveMethodInvocationTest {
-    private AspectJBeforeAdvice beforeAdvice = null;
-    private AspectJAfterReturningAdvice afterAdvice = null;
-    private AspectJAfterThrowingAdvice afterThrowingAdvice = null;
-    private UserService userService = null;
+public class ReflectiveMethodInvocationTest  extends AbstractV5Test {
+
+    private  AspectJBeforeAdvice beforeAdvice = null;
+    private  AspectJAfterReturningAdvice afterAdvice = null;
+    private AspectJExpressionPointcut pc = null;
+    private BeanFactory beanFactory = null;
+    private AspectInstanceFactory aspectInstanceFactory = null;
+
+    private AspectJAfterThrowingAdvice  afterThrowingAdvice = null;
+    private UserService petStoreService = null;
+    private TransactionManager tx;
 
 
     @Before
     public  void setUp() throws Exception{
-        userService = new UserService();
-        TransactionManager tx = new TransactionManager();
+        petStoreService = new UserService();
+        tx = new TransactionManager();
 
         MessageTracker.clearMsgs();
+
+        beanFactory = this.getBeanFactory("bean-v5.xml");
+        aspectInstanceFactory = this.getAspectInstanceFactory("tx");
+        aspectInstanceFactory.setBeanFactory(beanFactory);
+
         beforeAdvice = new AspectJBeforeAdvice(
-                TransactionManager.class.getMethod("start"),
+                this.getAdviceMethod("start"),
                 null,
-                tx);
+                aspectInstanceFactory);
 
         afterAdvice = new AspectJAfterReturningAdvice(
-                TransactionManager.class.getMethod("commit"),
+                this.getAdviceMethod("commit"),
                 null,
-                tx);
+                aspectInstanceFactory);
 
         afterThrowingAdvice = new AspectJAfterThrowingAdvice(
-                TransactionManager.class.getMethod("rollback"),
+                this.getAdviceMethod("rollback"),
                 null,
-                tx
+                aspectInstanceFactory
         );
 
     }
@@ -60,12 +74,12 @@ public class ReflectiveMethodInvocationTest {
 
         Method targetMethod = UserService.class.getMethod("placeOrder");
 
-        List<MethodInterceptor> interceptors = new ArrayList<>();
+        List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
         interceptors.add(beforeAdvice);
         interceptors.add(afterAdvice);
 
 
-        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(userService,targetMethod,new Object[0],interceptors);
+        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(petStoreService,targetMethod,new Object[0],interceptors);
 
         mi.proceed();
 
@@ -84,13 +98,13 @@ public class ReflectiveMethodInvocationTest {
 
         Method targetMethod = UserService.class.getMethod("placeOrder");
 
-        List<MethodInterceptor> interceptors = new ArrayList<>();
+        List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
         interceptors.add(afterAdvice);
         interceptors.add(beforeAdvice);
 
 
 
-        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(userService,targetMethod,new Object[0],interceptors);
+        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(petStoreService,targetMethod,new Object[0],interceptors);
 
         mi.proceed();
 
@@ -108,13 +122,13 @@ public class ReflectiveMethodInvocationTest {
 
         Method targetMethod = UserService.class.getMethod("placeOrderWithException");
 
-        List<MethodInterceptor> interceptors = new ArrayList<>();
+        List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
         interceptors.add(afterThrowingAdvice);
         interceptors.add(beforeAdvice);
 
 
 
-        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(userService,targetMethod,new Object[0],interceptors);
+        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(petStoreService,targetMethod,new Object[0],interceptors);
         try{
             mi.proceed();
 
@@ -131,5 +145,7 @@ public class ReflectiveMethodInvocationTest {
 
 
     }
+
 }
+
 

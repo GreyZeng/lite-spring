@@ -7,32 +7,24 @@ import java.util.List;
  * 2020/7/31
  */
 public interface BeanDefinition {
-    String SCOPE_DEFAULT = "";
     String SCOPE_SINGLETON = "singleton";
     String SCOPE_PROTOTYPE = "prototype";
-
-    String getID();
+    String SCOPE_DEFAULT = "";
 
     boolean isSingleton();
-
     boolean isPrototype();
-
     String getScope();
-
     void setScope(String scope);
 
     String getBeanClassName();
 
     List<PropertyValue> getPropertyValues();
-
     ConstructorArgument getConstructorArgument();
-
+    String getID();
     boolean hasConstructorArgumentValues();
 
-    boolean hasBeanClass();
-
-    Class<?> getBeanClass() throws IllegalStateException;
-
-    // TODO 注意ClassLoader
     Class<?> resolveBeanClass() throws ClassNotFoundException;
+    Class<?> getBeanClass() throws IllegalStateException ;
+    boolean hasBeanClass();
+    boolean isSynthetic();
 }

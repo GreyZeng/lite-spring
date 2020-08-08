@@ -12,77 +12,50 @@ import java.util.List;
  * 2020/7/31
  */
 public class GenericBeanDefinition implements BeanDefinition {
-    private String beanId;
+    private String id;
     private String beanClassName;
     private Class<?> beanClass;
-    // 默认是单例
+    private boolean singleton = true;
+    private boolean prototype = false;
     private String scope = SCOPE_DEFAULT;
-    private List<PropertyValue> propertyValues = new ArrayList<>();
+
+    List<PropertyValue> propertyValues = new ArrayList<PropertyValue>();
     private ConstructorArgument constructorArgument = new ConstructorArgument();
+    //表明这个Bean定义是不是我们litespring自己合成的。
+    private boolean isSynthetic = false;
 
-    public GenericBeanDefinition() {
-    }
+    public GenericBeanDefinition(String id, String beanClassName) {
 
-    public GenericBeanDefinition(String beanId, String beanClassName) {
-        this.beanId = beanId;
+        this.id = id;
         this.beanClassName = beanClassName;
     }
 
-    @Override
-    public String getID() {
-        return this.beanId;
+    public GenericBeanDefinition(Class<?> clz) {
+        this.beanClass = clz;
+        this.beanClassName = clz.getName();
     }
 
-    public void setId(String id) {
-        this.beanId = id;
+    public GenericBeanDefinition() {
+
+    }
+
+    public boolean isSynthetic() {
+        return isSynthetic;
+    }
+
+    public void setSynthetic(boolean isSynthetic) {
+        this.isSynthetic = isSynthetic;
+    }
+
+    public String getBeanClassName() {
+
+        return this.beanClassName;
     }
 
     public void setBeanClassName(String className) {
         this.beanClassName = className;
     }
 
-    @Override
-    public boolean isSingleton() {
-        return SCOPE_SINGLETON.equals(scope) || SCOPE_DEFAULT.equals(scope);
-    }
-
-    @Override
-    public boolean isPrototype() {
-        return SCOPE_PROTOTYPE.equals(scope);
-    }
-
-    @Override
-    public String getScope() {
-        return this.scope;
-    }
-
-    @Override
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    @Override
-    public String getBeanClassName() {
-        return beanClassName;
-    }
-
-    @Override
-    public List<PropertyValue> getPropertyValues() {
-        return this.propertyValues;
-    }
-
-    @Override
-    public ConstructorArgument getConstructorArgument() {
-        return this.constructorArgument;
-    }
-
-    @Override
-    public boolean hasConstructorArgumentValues() {
-        return !this.constructorArgument.isEmpty();
-    }
-
-    // TODO 注意ClassLoader
-    @Override
     public Class<?> resolveBeanClass() throws ClassNotFoundException {
         String className = getBeanClassName();
         if (className == null) {
@@ -93,7 +66,6 @@ public class GenericBeanDefinition implements BeanDefinition {
         return resolvedClass;
     }
 
-    @Override
     public Class<?> getBeanClass() throws IllegalStateException {
         if (this.beanClass == null) {
             throw new IllegalStateException(
@@ -102,8 +74,46 @@ public class GenericBeanDefinition implements BeanDefinition {
         return this.beanClass;
     }
 
-    @Override
     public boolean hasBeanClass() {
         return this.beanClass != null;
+    }
+
+    public boolean isSingleton() {
+        return this.singleton;
+    }
+
+    public boolean isPrototype() {
+        return this.prototype;
+    }
+
+    public String getScope() {
+        return this.scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+        this.singleton = SCOPE_SINGLETON.equals(scope) || SCOPE_DEFAULT.equals(scope);
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
+
+    }
+
+    public List<PropertyValue> getPropertyValues() {
+        return this.propertyValues;
+    }
+
+    public ConstructorArgument getConstructorArgument() {
+        return this.constructorArgument;
+    }
+
+    public String getID() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean hasConstructorArgumentValues() {
+        return !this.constructorArgument.isEmpty();
     }
 }

@@ -15,12 +15,13 @@ public class ScannedGenericBeanDefinition extends GenericBeanDefinition implemen
 
     public ScannedGenericBeanDefinition(AnnotationMetadata metadata) {
         super();
+
         this.metadata = metadata;
+
         setBeanClassName(this.metadata.getClassName());
     }
 
 
-    @Override
     public final AnnotationMetadata getMetadata() {
         return this.metadata;
     }
