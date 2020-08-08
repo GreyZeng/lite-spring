@@ -16,6 +16,7 @@ import java.sql.Ref;
         PointcutTest.class,
         MethodLocatingFactoryTest.class,
         ReflectiveMethodInvocationTest.class,
+        CglibAopProxyTest.class
 
 })
 public class V5AllTest {

@@ -26,14 +26,13 @@ public class ReflectiveMethodInvocationTest {
     private AspectJBeforeAdvice beforeAdvice = null;
     private AspectJAfterReturningAdvice afterAdvice = null;
     private AspectJAfterThrowingAdvice afterThrowingAdvice = null;
-    private UserService petStoreService = null;
-    private TransactionManager tx;
+    private UserService userService = null;
 
 
     @Before
     public  void setUp() throws Exception{
-        petStoreService = new UserService();
-        tx = new TransactionManager();
+        userService = new UserService();
+        TransactionManager tx = new TransactionManager();
 
         MessageTracker.clearMsgs();
         beforeAdvice = new AspectJBeforeAdvice(
@@ -61,12 +60,12 @@ public class ReflectiveMethodInvocationTest {
 
         Method targetMethod = UserService.class.getMethod("placeOrder");
 
-        List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
+        List<MethodInterceptor> interceptors = new ArrayList<>();
         interceptors.add(beforeAdvice);
         interceptors.add(afterAdvice);
 
 
-        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(petStoreService,targetMethod,new Object[0],interceptors);
+        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(userService,targetMethod,new Object[0],interceptors);
 
         mi.proceed();
 
@@ -85,13 +84,13 @@ public class ReflectiveMethodInvocationTest {
 
         Method targetMethod = UserService.class.getMethod("placeOrder");
 
-        List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
+        List<MethodInterceptor> interceptors = new ArrayList<>();
         interceptors.add(afterAdvice);
         interceptors.add(beforeAdvice);
 
 
 
-        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(petStoreService,targetMethod,new Object[0],interceptors);
+        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(userService,targetMethod,new Object[0],interceptors);
 
         mi.proceed();
 
@@ -109,13 +108,13 @@ public class ReflectiveMethodInvocationTest {
 
         Method targetMethod = UserService.class.getMethod("placeOrderWithException");
 
-        List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
+        List<MethodInterceptor> interceptors = new ArrayList<>();
         interceptors.add(afterThrowingAdvice);
         interceptors.add(beforeAdvice);
 
 
 
-        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(petStoreService,targetMethod,new Object[0],interceptors);
+        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(userService,targetMethod,new Object[0],interceptors);
         try{
             mi.proceed();
 
