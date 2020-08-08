@@ -5,6 +5,7 @@ import org.spring.beans.factory.annotation.Autowired;
 import org.spring.dao.v5.AccountDao;
 import org.spring.dao.v5.ItemDao;
 import org.spring.stereotype.Component;
+import org.spring.util.MessageTracker;
 
 /**
  * @author zenghui
@@ -28,7 +29,12 @@ public class UserService {
         return itemDao;
     }
 
-    public void placeOrder() {
+    public void placeOrder(){
         System.out.println("place order");
+        MessageTracker.addMsg("place order");
+
+    }
+    public void placeOrderWithException(){
+        throw new NullPointerException();
     }
 }

@@ -1,32 +1,38 @@
-/*
 package org.spring.test.v5;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.spring.aop.aspectj.AspectJAfterReturningAdvice;
+import org.spring.aop.aspectj.AspectJAfterThrowingAdvice;
+import org.spring.aop.aspectj.AspectJBeforeAdvice;
+import org.spring.aop.framework.ReflectiveMethodInvocation;
+import org.spring.service.v5.UserService;
+import org.spring.tx.TransactionManager;
+import org.spring.util.MessageTracker;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-*/
+
 /**
  * @author zenghui
  * 2020/8/8
- *//*
+ */
 
 public class ReflectiveMethodInvocationTest {
     private AspectJBeforeAdvice beforeAdvice = null;
     private AspectJAfterReturningAdvice afterAdvice = null;
-    private AspectJAfterThrowingAdvice  afterThrowingAdvice = null;
-    private PetStoreService petStoreService = null;
+    private AspectJAfterThrowingAdvice afterThrowingAdvice = null;
+    private UserService petStoreService = null;
     private TransactionManager tx;
 
 
     @Before
     public  void setUp() throws Exception{
-        petStoreService = new PetStoreService();
+        petStoreService = new UserService();
         tx = new TransactionManager();
 
         MessageTracker.clearMsgs();
@@ -53,7 +59,7 @@ public class ReflectiveMethodInvocationTest {
     public void testMethodInvocation() throws Throwable{
 
 
-        Method targetMethod = PetStoreService.class.getMethod("placeOrder");
+        Method targetMethod = UserService.class.getMethod("placeOrder");
 
         List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
         interceptors.add(beforeAdvice);
@@ -77,7 +83,7 @@ public class ReflectiveMethodInvocationTest {
     public void testMethodInvocation2() throws Throwable{
 
 
-        Method targetMethod = PetStoreService.class.getMethod("placeOrder");
+        Method targetMethod = UserService.class.getMethod("placeOrder");
 
         List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
         interceptors.add(afterAdvice);
@@ -101,7 +107,7 @@ public class ReflectiveMethodInvocationTest {
     public void testAfterThrowing() throws Throwable{
 
 
-        Method targetMethod = PetStoreService.class.getMethod("placeOrderWithException");
+        Method targetMethod = UserService.class.getMethod("placeOrderWithException");
 
         List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
         interceptors.add(afterThrowingAdvice);
@@ -127,4 +133,4 @@ public class ReflectiveMethodInvocationTest {
 
     }
 }
-*/
+

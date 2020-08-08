@@ -4,6 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.spring.test.v4.*;
 
+import java.sql.Ref;
+
 /**
  * @author zenghui
  * 2020/8/2
@@ -12,7 +14,8 @@ import org.spring.test.v4.*;
 @Suite.SuiteClasses({
         CGlibTest.class,
         PointcutTest.class,
-        MethodLocatingFactoryTest.class
+        MethodLocatingFactoryTest.class,
+        ReflectiveMethodInvocationTest.class,
 
 })
 public class V5AllTest {
