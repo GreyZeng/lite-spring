@@ -37,8 +37,6 @@ public class AspectJExpressionPointcut implements Pointcut, MethodMatcher {
 
     private PointcutExpression pointcutExpression;
 
-    private ClassLoader pointcutClassLoader;
-
     public AspectJExpressionPointcut() {
 
     }
@@ -95,8 +93,8 @@ public class AspectJExpressionPointcut implements Pointcut, MethodMatcher {
             throw new IllegalStateException("Must set property 'expression' before attempting to match");
         }
         if (this.pointcutExpression == null) {
-            this.pointcutClassLoader = ClassUtils.getDefaultClassLoader();
-            this.pointcutExpression = buildPointcutExpression(this.pointcutClassLoader);
+            ClassLoader pointcutClassLoader = ClassUtils.getDefaultClassLoader();
+            this.pointcutExpression = buildPointcutExpression(pointcutClassLoader);
         }
     }
 

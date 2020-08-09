@@ -168,7 +168,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefin
         for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
             result = beanProcessor.afterInitialization(result, beanName);
             if (result == null) {
-                return result;
+                return null;
             }
         }
         return result;
@@ -196,9 +196,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefin
     }
 
     public void resolveBeanClass(BeanDefinition bd) {
-        if (bd.hasBeanClass()) {
-            return;
-        } else {
+        if (!bd.hasBeanClass()) {
             try {
                 bd.resolveBeanClass();
             } catch (ClassNotFoundException e) {
