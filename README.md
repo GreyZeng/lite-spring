@@ -1,23 +1,33 @@
-本文是参考公众号：码农翻身 的[从零开始造Spring](https://mp.weixin.qq.com/s/gbvdwpPtQcjyaigRBDjd-Q) 教程的学习笔记
+
+
+
+<meta name = "referrer" content = "no-referrer" />
+
+作者： [Grey](https://www.greyzeng.com/)
+
+原文地址：[Spring的轻量级实现](https://www.greyzeng.com/p/1d42af57.html)
+
 
 ## 源码
 
 [github](https://github.com/GreyZeng/lite-spring)
 
-## 开发方法
+## 使用TDD开发方法
 
+[示例](https://gitee.com/greyzeng/tdd_demo)
 
-- TDD【[示例](https://gitee.com/greyzeng/tdd_demo)】
 1. 写一个测试用例
-1. 运行：失败
-1. 写Just enough的代码，让测试通过
-1. 重构代码保持测试通过，
+2. 运行：失败
+3. 写Just enough的代码，让测试通过
+4. 重构代码保持测试通过，
 
 然后循环往复。
 
+<!--more-->
 
 ## 说明
 
+- 本文是参考公众号：码农翻身 的[从零开始造Spring](https://mp.weixin.qq.com/s/gbvdwpPtQcjyaigRBDjd-Q) 教程的学习笔记
 - 仅实现核心功能
 - 基于spring-framework-3.2.18.RELEASE版本
 - 日志和异常处理待完善
@@ -308,8 +318,3 @@ JdkAopProxyFactory
 
 tag:vaop-v3
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/757806/1596979439545-c578424a-bd86-4eaf-b43b-a358e3369d51.png#align=left&display=inline&height=473&margin=%5Bobject%20Object%5D&name=image.png&originHeight=473&originWidth=818&size=229671&status=done&style=none&width=818)
-
-
-
-
-
