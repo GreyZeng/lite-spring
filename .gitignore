@@ -27,6 +27,6 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
-
+/.apt_generated_tests/
 ### VS Code ###
 .vscode/
